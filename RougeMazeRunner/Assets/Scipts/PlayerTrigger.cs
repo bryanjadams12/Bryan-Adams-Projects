@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerTrigger : MonoBehaviour
 {
@@ -6,11 +6,14 @@ public class PlayerTrigger : MonoBehaviour
     {
         if (other.CompareTag("Key"))
         {
+            Debug.Log("Key collected!"); // Confirm collection
             GameManager.Instance.CollectKey();
             Destroy(other.gameObject);
         }
-        else if (other.CompareTag("Exit"))
+
+        if (other.CompareTag("Exit"))
         {
+            Debug.Log("Reached Exit!");
             GameManager.Instance.PlayerEscaped();
         }
     }

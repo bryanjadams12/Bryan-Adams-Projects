@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using UnityEngine.UI; // if using standard UI
+using TMPro;           // if using TextMeshPro
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +17,8 @@ public class GameManager : MonoBehaviour
     public int keysRequired = 3;
     public bool gameEnded = false;
     private bool timerStarted = false;
+    public Transform playerStartPosition;
+    public GameObject player;
 
     [Header("Managers")]
     public KeyManager keyManager;
@@ -64,11 +69,11 @@ public class GameManager : MonoBehaviour
     public void CollectKey()
     {
         keysCollected++;
+        Debug.Log($"Keys Collected: {keysCollected}/{keysRequired}");
 
         if (keysCollected >= keysRequired)
         {
-            Debug.Log("All keys collected! Find the exit!");
-
+            Debug.Log("All keys collected! Exit is now active.");
             if (exitManager != null)
                 exitManager.SetExitActive(true);
         }
@@ -78,15 +83,25 @@ public class GameManager : MonoBehaviour
     {
         if (keysCollected < keysRequired) return;
 
-        if (currentRound >= totalRounds)
-        {
-            WinGame();
-        }
-        else
-        {
-            currentRound++;
-            StartRound();
-        }
+        StartCoroutine(HandleRoundCompletion());
+    }
+
+    private IEnumerator HandleRoundCompletion()
+    {
+        gameEnded = true;
+        Debug.Log($"✅ Round {currentRound} complete!");
+
+        // Pause before starting the next round
+        yield return new WaitForSeconds(5f);
+
+        // Move player back to start
+        if (player != null && playerStartPosition != null)
+            player.transform.position = playerStartPosition.position;
+
+        gameEnded = false;
+        currentRound++;
+
+        StartRound(); // keys respawn, timer resets (but won't start until player moves)
     }
 
     void WinGame()
