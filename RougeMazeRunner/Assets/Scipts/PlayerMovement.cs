@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     private Vector2 direction;
     private Rigidbody2D rb;
+    private bool movementEnabled = true;
 
     private void Start()
     {
@@ -14,6 +15,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!movementEnabled)
+        {
+            direction = Vector2.zero;
+            return;
+        }
+
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
 
@@ -30,12 +37,23 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            direction = Vector2.zero; // ?? Stop when no input
+            direction = Vector2.zero;
         }
     }
 
     private void FixedUpdate()
     {
         rb.linearVelocity = direction * moveSpeed;
+    }
+
+    public void SetMovementEnabled(bool enabled)
+    {
+        movementEnabled = enabled;
+
+        if (!enabled)
+        {
+            direction = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 }

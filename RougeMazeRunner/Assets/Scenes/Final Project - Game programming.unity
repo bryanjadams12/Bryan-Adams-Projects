@@ -3616,6 +3616,9 @@ MonoBehaviour:
   keysCollected: 0
   keysRequired: 3
   gameEnded: 0
+  playerStartPosition: {fileID: 1161764564}
+  player: {fileID: 20447580}
+  playerMovement: {fileID: 20447585}
   keyManager: {fileID: 325161345}
   exitManager: {fileID: 1123708091}
 --- !u!4 &461858662
@@ -7619,6 +7622,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 325161346}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1161764563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1161764564}
+  m_Layer: 0
+  m_Name: playerStartPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1161764564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161764563}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 72.2, y: -8.5, z: -0.049594775}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1162209505
 GameObject:
@@ -14113,3 +14147,4 @@ SceneRoots:
   - {fileID: 325161346}
   - {fileID: 1123708092}
   - {fileID: 461858662}
+  - {fileID: 1161764564}

@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private bool timerStarted = false;
     public Transform playerStartPosition;
     public GameObject player;
+    public PlayerMovement playerMovement;
 
     [Header("Managers")]
     public KeyManager keyManager;
@@ -113,9 +114,33 @@ public class GameManager : MonoBehaviour
 
     void LoseGame()
     {
+        if (gameEnded) return;
+
         gameEnded = true;
-        Debug.Log("Time ran out. You lose.");
-        // SceneManager.LoadScene("LoseScene");
+        Debug.Log("⛔ Time ran out. You lose.");
+
+        // Disable movement
+        if (playerMovement != null)
+            playerMovement.SetMovementEnabled(false);
+
+        StartCoroutine(HandleGameOver());
+    }
+
+    private IEnumerator HandleGameOver()
+    {
+        yield return new WaitForSeconds(5f);
+
+        currentRound = 1;
+        gameEnded = false;
+
+        // Move player to start if needed
+        if (player != null && playerStartPosition != null)
+            player.transform.position = playerStartPosition.position;
+
+        if (playerMovement != null)
+            playerMovement.SetMovementEnabled(true);
+
+        StartRound();
     }
 
     public float GetTimeRemaining() => timeRemaining;
