@@ -109,6 +109,7 @@ public class GameManager : MonoBehaviour
     public void StartTimer()
     {
         timerStarted = true;
+        Debug.Log("Timer started!");
     }
 
     public bool HasTimerStarted()

@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class ExitManager : MonoBehaviour
 {
-    public GameObject ExitVisual;
-    public Collider2D exitCollider;
+    public GameObject exitVisual; // Assign this in the Inspector
 
-    public void SetExitActive(bool isActive)
+    public void SetExitActive(bool active)
     {
-        if (ExitVisual != null)
-            ExitVisual.SetActive(isActive);
-
-        if (exitCollider != null)
-            exitCollider.enabled = isActive;
+        exitVisual.SetActive(active);
     }
 }
