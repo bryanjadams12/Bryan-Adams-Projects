@@ -91,17 +91,21 @@ public class GameManager : MonoBehaviour
         gameEnded = true;
         Debug.Log($"Round {currentRound} complete!");
 
-        // Pause before starting the next round
         yield return new WaitForSeconds(5f);
 
-        // Move player back to start
         if (player != null && playerStartPosition != null)
             player.transform.position = playerStartPosition.position;
 
-        gameEnded = false;
-        currentRound++;
-
-        StartRound(); // keys respawn, timer resets (but won't start until player moves)
+        if (currentRound >= totalRounds)
+        {
+            WinGame();
+        }
+        else
+        {
+            currentRound++;
+            gameEnded = false;
+            StartRound(); // keys respawn, timer resets (but won't start until player moves)
+        }
     }
 
     void WinGame()
