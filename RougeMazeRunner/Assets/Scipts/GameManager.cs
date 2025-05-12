@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI; // if using standard UI
-using TMPro;           // if using TextMeshPro
+      // if using TextMeshPro
 
 public class GameManager : MonoBehaviour
 {
