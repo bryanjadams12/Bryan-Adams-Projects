@@ -156,4 +156,12 @@ public class GameManager : MonoBehaviour
     {
         return timerStarted;
     }
+
+    public void TimerExpired()
+    {
+        if (!gameEnded)
+        {
+            LoseGame();
+        }
+    }
 }

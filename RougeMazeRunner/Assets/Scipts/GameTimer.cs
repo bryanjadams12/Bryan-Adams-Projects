@@ -1,25 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class GameTimer : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] float remainingTime;
-
+    [SerializeField] private TextMeshProUGUI timerText;
 
     void Update()
     {
-        if (remainingTime > 0)
+        if (!GameManager.Instance.HasTimerStarted())
+            return;
+
+        float remainingTime = GameManager.Instance.GetTimeRemaining();
+
+        if (remainingTime <= 0f)
         {
-            remainingTime -= Time.deltaTime;
-        }
-        else if(remainingTime < 0)
-        {
-            remainingTime = 0;
-            //implement game over here
-            // SceneManager.LoadSceneAsync(2 //Gameover scene);
             timerText.color = Color.red;
         }
 
