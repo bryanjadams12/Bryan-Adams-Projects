@@ -49,11 +49,9 @@ public class PlayerMovement : MonoBehaviour
     public void SetMovementEnabled(bool enabled)
     {
         movementEnabled = enabled;
-
         if (!enabled)
         {
-            direction = Vector2.zero;
-            rb.linearVelocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero; // Stop any ongoing movement immediately
         }
     }
 }

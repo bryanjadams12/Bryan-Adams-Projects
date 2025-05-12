@@ -91,8 +91,13 @@ public class GameManager : MonoBehaviour
         gameEnded = true;
         Debug.Log($"Round {currentRound} complete!");
 
+        // Disable movement during intermission
+        if (playerMovement != null)
+            playerMovement.SetMovementEnabled(false);
+
         yield return new WaitForSeconds(5f);
 
+        // Move player to start
         if (player != null && playerStartPosition != null)
             player.transform.position = playerStartPosition.position;
 
@@ -104,7 +109,11 @@ public class GameManager : MonoBehaviour
         {
             currentRound++;
             gameEnded = false;
-            StartRound(); // keys respawn, timer resets (but won't start until player moves)
+            StartRound();
+
+            // Re-enable movement (timer starts when player moves)
+            if (playerMovement != null)
+                playerMovement.SetMovementEnabled(true);
         }
     }
 
