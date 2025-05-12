@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private bool isMuted = false;
+
     public void Pause()
     {
         pauseMenu.SetActive(true);
         Time.timeScale = 0; // Pause the game
     }
-
 
     public void Home()
     {
@@ -31,17 +31,16 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1; // Resume the game
     }
+
     public void Sound()
     {
-        // Implement sound settings here to mute or unmute the game
-        Time.timeScale = 1; // Resume the game
+        isMuted = !isMuted;
+        AudioListener.volume = isMuted ? 0f : 1f;
+        Debug.Log("Sound toggled. Muted: " + isMuted);
 
-    }
-        public void Settings()
-    {
-        // Implement settings here to mute or unmute the game
-        Time.timeScale = 1; // Resume the game
-
+        // Do NOT resume the game
+        // Time.timeScale stays unchanged
     }
 
+    
 }

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using UnityEngine.UI; // if using standard UI
-      // if using TextMeshPro
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -90,7 +89,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator HandleRoundCompletion()
     {
         gameEnded = true;
-        Debug.Log($"✅ Round {currentRound} complete!");
+        Debug.Log($"Round {currentRound} complete!");
 
         // Pause before starting the next round
         yield return new WaitForSeconds(5f);
@@ -117,7 +116,7 @@ public class GameManager : MonoBehaviour
         if (gameEnded) return;
 
         gameEnded = true;
-        Debug.Log("⛔ Time ran out. You lose.");
+        Debug.Log("Time ran out. You lose.");
 
         // Disable movement
         if (playerMovement != null)

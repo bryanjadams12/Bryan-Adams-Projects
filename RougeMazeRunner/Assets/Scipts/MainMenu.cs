@@ -13,7 +13,8 @@ public class MainMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void QuitGame()
     {
-        Application.Quit();
+        Debug.Log("Quitting Game"); // This shows in Console during testing
+        Application.Quit();             // This only works in a built game
     }
 
     // Update is called once per frame
