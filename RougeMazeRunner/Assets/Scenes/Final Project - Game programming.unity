@@ -7816,8 +7816,8 @@ MonoBehaviour:
   panel: {fileID: 888932025}
   roundText: {fileID: 1908775930}
   nextButton: {fileID: 470932701}
-  restartButton: {fileID: 1558532089}
-  homeButton: {fileID: 1808391659}
+  restartButton: {fileID: 1808391659}
+  homeButton: {fileID: 1558532089}
 --- !u!4 &836842574
 Transform:
   m_ObjectHideFlags: 0

@@ -30,7 +30,8 @@ public class PlayerMovement : MonoBehaviour
         {
             direction = inputDirection.normalized;
 
-            if (!GameManager.Instance.HasTimerStarted())
+            // Only start the timer if it's not started AND game isn't ended
+            if (!GameManager.Instance.HasTimerStarted() && !GameManager.Instance.gameEnded)
             {
                 GameManager.Instance.StartTimer();
             }

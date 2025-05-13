@@ -47,11 +47,12 @@ public class GameManager : MonoBehaviour
 
         if (timeRemaining <= 0f)
         {
+            timeRemaining = 0f;
             LoseGame();
         }
     }
 
-    void StartRound()
+    public void StartRound()
     {
         Debug.Log($"Starting Round {currentRound}");
 
@@ -63,11 +64,27 @@ public class GameManager : MonoBehaviour
             timeRemaining = 30f;
 
         keysCollected = 0;
-
         keyManager.SpawnKeys();
 
         if (exitManager != null)
             exitManager.SetExitActive(false);
+
+        // Re-enable movement when round starts
+        if (playerMovement != null)
+            playerMovement.SetMovementEnabled(true);
+    }
+
+
+    public void ResetTimer()
+    {
+        timerStarted = false;
+
+        if (currentRound - 1 < roundTimeLimits.Length)
+            timeRemaining = roundTimeLimits[currentRound - 1];
+        else
+            timeRemaining = 30f;
+
+        //Debug.Log($"Timer reset for Round {currentRound}: {timeRemaining} seconds");
     }
 
     public void CollectKey()
@@ -153,8 +170,10 @@ public class GameManager : MonoBehaviour
 
     public void StartTimer()
     {
+        if (timerStarted || gameEnded) return;
+
         timerStarted = true;
-        Debug.Log("Timer started!");
+        Debug.Log($"Timer started for Round {currentRound}");
     }
 
     public bool HasTimerStarted()

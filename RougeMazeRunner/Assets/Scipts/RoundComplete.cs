@@ -27,17 +27,24 @@ public class RoundCompleteUI : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    private void OnNextRound()
+    public void OnNextRound()
     {
         Time.timeScale = 1f;
-        panel.SetActive(false);
-        GameManager.Instance.StartNextRound();
+
+        // Re-enable movement and start the next round
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.playerMovement.SetMovementEnabled(true);
+            GameManager.Instance.StartRound();
+        }
+
+        panel.SetActive(false); // Hide only the round complete panel
     }
 
     private void OnRestart()
     {
         Time.timeScale = 1f;
-        GameManager.Instance.RestartGame(); // Call a function to reset game state and start from round 1
+        GameManager.Instance.RestartGame(); // This should reset the round and restart
     }
 
     private void OnHome()
