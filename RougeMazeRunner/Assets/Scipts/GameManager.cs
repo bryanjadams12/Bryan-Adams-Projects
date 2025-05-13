@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour
     public Transform playerStartPosition;
     public GameObject player;
     public PlayerMovement playerMovement;
+    public EndGameUI endGameUI;
+    public GameObject winUI;
+    public GameObject loseUI;
+    public RoundCompleteUI roundCompleteUI;
 
     [Header("Managers")]
     public KeyManager keyManager;
@@ -83,45 +87,51 @@ public class GameManager : MonoBehaviour
     {
         if (keysCollected < keysRequired) return;
 
-        StartCoroutine(HandleRoundCompletion());
-    }
+        if (currentRound >= totalRounds)
+        {
+            // Final round completed → show win UI immediately
+            gameEnded = true;
+            Debug.Log("All rounds complete!");
+            if (playerMovement != null)
+                playerMovement.SetMovementEnabled(false);
 
-    private IEnumerator HandleRoundCompletion()
-    {
+            winUI.SetActive(true); // Assuming you have this already
+            return;
+        }
+
         gameEnded = true;
         Debug.Log($"Round {currentRound} complete!");
 
-        // Disable movement during intermission
         if (playerMovement != null)
             playerMovement.SetMovementEnabled(false);
 
-        yield return new WaitForSeconds(5f);
+        Time.timeScale = 0f;
+        roundCompleteUI.Show(currentRound);
+    }
 
-        // Move player to start
+    public void StartNextRound()
+    {
+        currentRound++;
+        gameEnded = false;
+
+        // Reset position
         if (player != null && playerStartPosition != null)
             player.transform.position = playerStartPosition.position;
 
-        if (currentRound >= totalRounds)
-        {
-            WinGame();
-        }
-        else
-        {
-            currentRound++;
-            gameEnded = false;
-            StartRound();
+        // Re-enable movement
+        if (playerMovement != null)
+            playerMovement.SetMovementEnabled(true);
 
-            // Re-enable movement (timer starts when player moves)
-            if (playerMovement != null)
-                playerMovement.SetMovementEnabled(true);
-        }
+        StartRound(); // re-spawn keys, reset timer
     }
 
     void WinGame()
     {
         gameEnded = true;
         Debug.Log("You completed all rounds! You win!");
-        // SceneManager.LoadScene("WinScene");
+
+        if (endGameUI != null)
+            endGameUI.ShowWin();
     }
 
     void LoseGame()
@@ -131,28 +141,11 @@ public class GameManager : MonoBehaviour
         gameEnded = true;
         Debug.Log("Time ran out. You lose.");
 
-        // Disable movement
         if (playerMovement != null)
             playerMovement.SetMovementEnabled(false);
 
-        StartCoroutine(HandleGameOver());
-    }
-
-    private IEnumerator HandleGameOver()
-    {
-        yield return new WaitForSeconds(5f);
-
-        currentRound = 1;
-        gameEnded = false;
-
-        // Move player to start if needed
-        if (player != null && playerStartPosition != null)
-            player.transform.position = playerStartPosition.position;
-
-        if (playerMovement != null)
-            playerMovement.SetMovementEnabled(true);
-
-        StartRound();
+        if (endGameUI != null)
+            endGameUI.ShowLose();
     }
 
     public float GetTimeRemaining() => timeRemaining;
@@ -175,5 +168,18 @@ public class GameManager : MonoBehaviour
         {
             LoseGame();
         }
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f; // Just in case
+        currentRound = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload current scene
+    }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f; // Just in case
+        SceneManager.LoadScene(0); // Assumes main menu is at index 0
     }
 }
