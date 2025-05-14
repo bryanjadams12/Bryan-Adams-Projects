@@ -89,6 +89,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Starting Round {currentRound}");
 
+        ScoreManager.instance.ResetScore();
+
         timerStarted = false; // reset at start of each round
 
         if (currentRound - 1 < roundTimeLimits.Length)
@@ -122,7 +124,8 @@ public class GameManager : MonoBehaviour
 
     public void CollectKey()
     {
-        keysCollected++;
+        keysCollected++; 
+        ScoreManager.instance.AddPoint();
         Debug.Log($"Keys Collected: {keysCollected}/{keysRequired}");
 
         if (keysCollected >= keysRequired)
