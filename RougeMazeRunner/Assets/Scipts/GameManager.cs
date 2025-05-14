@@ -26,17 +26,23 @@ public class GameManager : MonoBehaviour
 
     [Header("Managers")]
     public KeyManager keyManager;
+
+    //added audio test
+    public AudioManager audioManager; // Optional: controls audio playback
     public ExitManager exitManager; // Optional: controls exit activation
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        //added audio test
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     void Start()
     {
         StartRound();
+        audioManager.PlaySFX(audioManager.background);
     }
 
     void Update()
@@ -64,6 +70,7 @@ public class GameManager : MonoBehaviour
             timeRemaining = 30f;
 
         keysCollected = 0;
+        ScoreManager.Instance.ResetScore(); //  Reset key count
         keyManager.SpawnKeys();
 
         if (exitManager != null)
@@ -91,6 +98,10 @@ public class GameManager : MonoBehaviour
     {
         keysCollected++;
         Debug.Log($"Keys Collected: {keysCollected}/{keysRequired}");
+
+        audioManager.PlaySFX(audioManager.keyPickup);
+
+
 
         if (keysCollected >= keysRequired)
         {
@@ -160,6 +171,9 @@ public class GameManager : MonoBehaviour
 
         if (playerMovement != null)
             playerMovement.SetMovementEnabled(false);
+
+        if(gameEnded != null)
+            audioManager.PlaySFX(audioManager.lose);
 
         if (endGameUI != null)
             endGameUI.ShowLose();

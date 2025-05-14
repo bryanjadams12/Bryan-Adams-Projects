@@ -5,7 +5,8 @@ using UnityEngine;
 public class KeyManager : MonoBehaviour
 {
     [Header("Key Setup")]
-    public GameObject keyPrefab;              // Assign your key prefab here
+    public GameObject keyPrefab;    
+    public AudioManager audioManager;         // Assign your key prefab here
     public Transform[] spawnPoints;           // Assign spawn points in the Inspector
     private List<GameObject> spawnedKeys = new List<GameObject>();
 
