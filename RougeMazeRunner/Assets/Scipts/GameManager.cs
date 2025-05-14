@@ -24,6 +24,12 @@ public class GameManager : MonoBehaviour
     public GameObject loseUI;
     public RoundCompleteUI roundCompleteUI;
 
+    AudioSource audioSource;
+    AudioSource roundCompleteAudioSource;
+    AudioSource loseAudioSource;
+    AudioSource winAudioSource;
+    public AudioSource gameMusicSource;
+
     [Header("Managers")]
     public KeyManager keyManager;
     public ExitManager exitManager; // Optional: controls exit activation
@@ -37,6 +43,33 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         StartRound();
+        AudioSource[] sources = GetComponents<AudioSource>();
+        if (sources.Length >= 3)
+        {
+            gameMusicSource = sources[0];
+            gameMusicSource.Play();
+            roundCompleteAudioSource = sources[1];
+            loseAudioSource = sources[2];
+            winAudioSource = sources[3];
+            audioSource = sources[4];
+        }
+    }
+
+    private IEnumerator PauseMusicWhilePlaying(AudioSource sfxSource)
+    {
+        if (gameMusicSource.isPlaying)
+            gameMusicSource.Pause();
+
+        sfxSource.Play();
+
+        yield return new WaitForSeconds(sfxSource.clip.length);
+
+        gameMusicSource.UnPause();
+    }
+
+    public AudioSource GetGameMusicSource()
+    {
+        return gameMusicSource;
     }
 
     void Update()
@@ -94,10 +127,17 @@ public class GameManager : MonoBehaviour
 
         if (keysCollected >= keysRequired)
         {
+            StartCoroutine(PlayAudioAfterDelay(0.5f));
             Debug.Log("All keys collected! Exit is now active.");
             if (exitManager != null)
                 exitManager.SetExitActive(true);
         }
+    }
+
+    private IEnumerator PlayAudioAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        audioSource.Play();
     }
 
     public void PlayerEscaped()
@@ -111,7 +151,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("All rounds complete!");
             if (playerMovement != null)
                 playerMovement.SetMovementEnabled(false);
-
+            StartCoroutine(PauseMusicWhilePlaying(winAudioSource));
             winUI.SetActive(true); // Assuming you have this already
             return;
         }
@@ -124,6 +164,7 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
         roundCompleteUI.Show(currentRound);
+        StartCoroutine(PauseMusicWhilePlaying(roundCompleteAudioSource));
     }
 
     public void StartNextRound()
@@ -142,15 +183,6 @@ public class GameManager : MonoBehaviour
         StartRound(); // re-spawn keys, reset timer
     }
 
-    void WinGame()
-    {
-        gameEnded = true;
-        Debug.Log("You completed all rounds! You win!");
-
-        if (endGameUI != null)
-            endGameUI.ShowWin();
-    }
-
     void LoseGame()
     {
         if (gameEnded) return;
@@ -162,6 +194,7 @@ public class GameManager : MonoBehaviour
             playerMovement.SetMovementEnabled(false);
 
         if (endGameUI != null)
+            StartCoroutine(PauseMusicWhilePlaying(loseAudioSource));
             endGameUI.ShowLose();
     }
 

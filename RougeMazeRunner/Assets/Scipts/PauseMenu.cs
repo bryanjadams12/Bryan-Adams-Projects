@@ -32,15 +32,15 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1; // Resume the game
     }
 
-    public void Sound()
-    {
-        isMuted = !isMuted;
-        AudioListener.volume = isMuted ? 0f : 1f;
-        Debug.Log("Sound toggled. Muted: " + isMuted);
+    //public void Sound()
+    //{
+        //isMuted = !isMuted;
+        //AudioListener.volume = isMuted ? 0f : 1f;
+        //Debug.Log("Sound toggled. Muted: " + isMuted);
 
         // Do NOT resume the game
         // Time.timeScale stays unchanged
-    }
+    //}
 
     
 }
